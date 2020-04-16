@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbar example</title>
+    <style>
+        body { 
+            background: black; 
+        }
+        .toolbar {
+            display: flex;
+            flex-direction: row;
+            background: #333;
+            overflow: visible;
+        }
+        .toolbar * {
+            flex: 0 0;
+        }
+        .toolbar button {
+            margin: 0px;
+            padding: 4px 5px;
+            border-radius: 0px;
+            background: unset;
+            border: 2px solid #0000;
+            cursor: pointer;
+        }
+        .toolbar button:hover {
+            border: 2px solid #fff4;
+            background: #fff2;
+        }
+        .toolbar button:active {
+            background: #fff6;
+        }
+        [tooltip] {
+            overflow: visible;
+            position: relative;
+        }
+        [tooltip]::after {
+            display: block;
+            content: attr(tooltip);
+            background: #555;
+            border: 1px solid #777;
+            color: white;
+            position: absolute;
+            top: calc(100% - 20px);
+            left: 0px;
+            opacity: 0;
+            transition: opacity .5s, top .5s;
+        }
+        [tooltip]:hover::after {
+            opacity: 1;
+            top: calc(100% + 10px);
+        }
+        .toolbar .dropdown {
+            padding-right: 20px;
+            position: relative;
+            background: #555;
+            width: max-content;
+            border: 2px solid black;
+            color: white;
+            overflow: visible;
+        }
+        .dropdown .visible::after {
+            content: "";
+            float: right;
+            width: 8px; height: 8px;
+            margin-top: 4px;
+            margin-right: -17px;
+            border-right: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            transition: transform .1s ease-out, margin-top .1s ease-out;
+            transform: rotate(45deg);
+        }
+        .dropdown.open .visible::after {
+            margin-top: 7px;
+            transform: rotate(225deg);
+        }
+        .toolbar .dropdown.open {
+            border: 2px solid #ccc;
+        }
+        .toolbar .dropdown .options {
+            background: #333;
+            position: relative;
+            margin-bottom: -100%;
+            overflow: auto;
+            height: min-content;
+            max-height: 0em;
+        }
+        .toolbar .dropdown.open .options {
+            max-height: 10em;
+            border: 2px solid #ccc;
+        }
+        .toolbar .dropdown.open .options > *:hover {
+            cursor: pointer;
+            background: #fff6;
+        }
+        .dropdown .visible, .dropdown .options > * {
+            padding: 3px 7px;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            const dropdown = document.getElementById("b");
+            const options = dropdown.getElementsByClassName("options")[0];
+            dropdown.onclick = ev => {
+                if (!dropdown.classList.contains("open")) {
+                    ev.stopPropagation();
+                    dropdown.classList.add("open");
+                    window.addEventListener("click", () => {
+                        dropdown.classList.remove("open");
+                    }, {once:true});
+                } else if (options.contains(ev.target)) {
+                    console.log("switching")
+                    /** @type {HTMLElement} */
+                    var choice = ev.target;
+                    while (choice.parentElement != options)
+                        choice = choice.parentElement;
+                    active[0].classList.remove("active");
+                    choice.classList.add("active");
+                }
+                visible.childNodes[0].remove();
+                visible.append(...active[0].cloneNode(true).childNodes);
+            }
+            const active = dropdown.getElementsByClassName("active");
+            const visible = dropdown.getElementsByClassName("visible")[0];
+            visible.textContent = active[0].textContent;
+        }
+    </script>
+</head>
+<body>
+    <div class="toolbar">
+        <button id="a" tooltip="options"><img src="build-white-18dp.svg"></button>
+        <span class="dropdown" id="b">
+            <div class="visible"></div>
+            <div class="ddcontent">
+                <div class="options">
+                    <div class="active">red</div>
+                    <div>green</div>
+                    <div>blue</div>
+                    <div>manganese</div>
+                </div>  
+            </div>
+        </span>
+    </div>
+</body>
+</html>
