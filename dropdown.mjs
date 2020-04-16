@@ -1,6 +1,5 @@
 const css = `
 :host {
-    //padding-right: 20px;
     position: relative;
     background: #555;
     width: max-content;
@@ -13,7 +12,6 @@ const css = `
     float: right;
     width: 8px; height: 8px;
     margin-top: 4px;
-    //margin-right: -17px;
     border-right: 2px solid #ddd;
     border-bottom: 2px solid #ddd;
     transition: transform .1s ease-out, margin-top .1s ease-out;
