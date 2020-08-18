@@ -85,7 +85,7 @@ export default class extends HTMLElement {
 
     connectEvent(name, target) {
         var bridging = false;
-        local_handler = ev => {
+        const local_handler = ev => {
             // If it hit the target already let it bubble out.
             if (ev.composedPath().includes(target)) return;
             // If natural, relay it to the target (and set the relay flag)
