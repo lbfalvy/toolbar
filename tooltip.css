@@ -1,0 +1,24 @@
+[tooltip] {
+    overflow: visible;
+    position: relative;
+}
+[tooltip]::after {
+    visibility: hidden;
+    display: block;
+    content: attr(tooltip);
+    padding: 1px 3px;
+    width: max-content;
+    background: #555;
+    border: 1px solid #777;
+    color: white;
+    position: absolute;
+    top: calc(100% - 20px);
+    left: 0px;
+    opacity: 0;
+    transition: opacity .1s, top .1s;
+}
+[tooltip]:not([disabled]):hover::after {
+    visibility: visible;
+    opacity: 1;
+    top: calc(100% + 10px);
+}

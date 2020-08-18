@@ -1,11 +1,13 @@
 const css = `
 :host {
+    display: inline-block;
     position: relative;
     background: #555;
     width: max-content;
     border: 2px solid black;
     color: white;
     overflow: visible;
+    height: 100%;
 }
 #visible::after {
     content: "";
@@ -27,16 +29,18 @@ const css = `
 #options {
     display: block;
     background: #333;
-    position: relative;
-    margin-bottom: calc(-100% - 4px);
+    float: left;
+    left: 0;
     overflow: auto;
-    height: min-content;
-    max-height: 0em;
+    height: 0;
     transform: translateY(6px);
     clear: both;
+    margin-bottom: calc(-100% - 4px);
+    margin-right: 4px;
 }
 :host([open]) #options {
-    max-height: 10em;
+    margin-right: unset;
+    height: min-content;
     border: 2px solid #ccc;
 }
 :host([open]) #options::slotted(:hover) {
@@ -54,7 +58,7 @@ const css = `
 
 export default class extends HTMLElement {
     constructor(...args) {
-        const self = super(args);
+        super();
         // === Build shadow tree ===
         const shadow = this.attachShadow({mode: "open"});
         const style = document.createElement("style");
@@ -62,21 +66,38 @@ export default class extends HTMLElement {
         style.append(css);
         const visible = document.createElement("div");
         visible.id = "visible";
+        visible.setAttribute("part", "selection");
         const options = document.createElement("slot");
         options.id = "options";
+        options.setAttribute("part", "options");
         shadow.append(style, visible, options);
-        // === React to clicks
-        this.addEventListener("click", ev => {
+        this.setAttribute("value", this.getAttribute("default-value"));
+        // === Select initial value ===
+        const initial = this.getContainingOption(this.querySelector("[active]"));
+        this.select(initial);
+        this.updateVisible();
+        // === React to clicks ===
+        if (!this.disabled) this.addEventListener("click", ev => {
+            // If the dropdown is closed
             if (!this.hasAttribute("open")) {
                 ev.stopPropagation();
+                // open it (shortly?)
                 setTimeout( this.open.bind(this), 0 );
-            } else {
+            } else { // If the dropdown is open
+                // Get the option
                 const option = this.getContainingOption(ev.target);
-                if (option) this.select(option);
-                this.updateVisible();
+                // Select it
+                if (option && this.isValidChoice(option)) {
+                    this.select(option);
+                    this.updateVisible();
+                }
             }
         });
-        return self;
+    }
+
+    isValidChoice(option) {
+        return option && option.textContent != ""
+            && !option.getAttribute("disabled");
     }
 
     getContainingOption(node) {
@@ -87,8 +108,16 @@ export default class extends HTMLElement {
 
     /** @param {Element} choice */
     select(choice) {
+        // Remove attribute from previous, if any
         this.getActive()?.removeAttribute("active");
+        // Set boolean attribute
         choice.setAttribute("active", "active");
+        // Value is either taken from active or deduced if missing
+        this.setAttribute("value", choice.hasAttribute("value") ?
+                          choice.getAttribute("value") : choice.textContent);
+        // Dispatch input-related events
+        this.dispatchEvent(new InputEvent("input", { data: choice.getAttribute("value") }));
+        this.dispatchEvent(new Event("change"));
     }
 
     open() {
@@ -103,7 +132,7 @@ export default class extends HTMLElement {
     updateVisible() {
         const visible = this.shadowRoot.getElementById("visible");
         visible.childNodes.forEach(node => node.remove());
-        visible.append(this.getDisplayedHTML());
+        visible.innerHTML = this.getDisplayedHTML();
     }
 
     getActive() {

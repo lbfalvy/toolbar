@@ -9,64 +9,31 @@
             background: black; 
         }
         .toolbar {
-            display: flex;
-            flex-direction: row;
             background: #333;
             overflow: visible;
-        }
-        .toolbar * {
-            flex: 0 0;
-        }
-        .toolbar button {
-            margin: 0px;
-            padding: 4px 5px;
-            border-radius: 0px;
-            background: unset;
-            border: 2px solid #0000;
-            cursor: pointer;
-        }
-        .toolbar button:hover {
-            border: 2px solid #fff4;
-            background: #fff2;
-        }
-        .toolbar button:active {
-            background: #fff6;
-        }
-        [tooltip] {
-            overflow: visible;
-            position: relative;
-        }
-        [tooltip]::after {
-            display: block;
-            content: attr(tooltip);
-            background: #555;
-            border: 1px solid #777;
-            color: white;
-            position: absolute;
-            top: calc(100% - 20px);
-            left: 0px;
-            opacity: 0;
-            transition: opacity .5s, top .5s;
-        }
-        [tooltip]:hover::after {
-            opacity: 1;
-            top: calc(100% + 10px);
         }
     </style>
     <script type="module">
         import Dropdown from "./dropdown.mjs"
+        import Toggle from "./toggle.mjs"
         customElements.define("dropdown-select", Dropdown);
+        customElements.define("icon-toggle", Toggle);
     </script>
 </head>
 <body>
     <div class="toolbar">
-        <button id="a" tooltip="options"><img src="build-white-18dp.svg"></button>
+        <icon-toggle tooltip="Project settings" src="build-white-18dp.svg" 
+                    name="cat" value="quack"></icon-toggle>
         <dropdown-select>
-            <div class="active">red</div>
-            <div>green</div>
-            <div>blue</div>
-            <div>manganese</div>
+            <div active>apple</div>
+            <div>plum</div>
+            <div>pear</div>
+            <div>o<b>ran</b>ge</div>
         </dropdown-select>
+        <icon-toggle tooltip="Message events" src="sms_failed-white-18dp.svg" 
+                        name="duck" value="quack"></icon-toggle>
+        <icon-toggle tooltip="Timers" src="watch_later-white-18dp.svg" 
+                        name="duck" value="quack"></icon-toggle>
     </div>
 </body>
 </html>
