@@ -6,7 +6,7 @@ const css = `
     width: max-content;
     border: 2px solid black;
     color: white;
-    overflow: visible;
+    //overflow: visible;
     height: 100%;
 }
 #visible::after {
@@ -29,17 +29,20 @@ const css = `
 #options {
     display: block;
     background: #333;
-    float: left;
-    left: 0;
+    position: absolute;
+    //float: left;
+    left: -2px;
+    top: 100%;
     overflow: auto;
     height: 0;
     transform: translateY(6px);
-    clear: both;
-    margin-bottom: calc(-100% - 4px);
+    //clear: both;
+    //margin-bottom: calc(-100% - 4px);
     margin-right: 4px;
 }
 :host([open]) #options {
     margin-right: unset;
+    margin-bottom: calc(-100% - 4px);
     height: min-content;
     border: 2px solid #ccc;
 }
@@ -93,6 +96,10 @@ export default class extends HTMLElement {
                 }
             }
         });
+        // === Constant width ===
+        const widthUpdater = new MutationObserver(this.updateWidth.bind(this));
+        widthUpdater.observe(shadow, {childList: true, attributes: true});
+        this.updateWidth();
     }
 
     isValidChoice(option) {
@@ -141,5 +148,12 @@ export default class extends HTMLElement {
 
     getDisplayedHTML() {
         return this.getActive().innerHTML;
+    }
+
+    updateWidth() {
+        const opts = this.shadowRoot.getElementById("options")
+        const optsWidth = opts.clientWidth + "px";
+        console.log(optsWidth);
+        this.style.width = optsWidth;
     }
 }
