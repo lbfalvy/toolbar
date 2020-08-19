@@ -7,33 +7,60 @@
     <style>
         body { 
             background: black; 
+            font-family: sans-serif;
         }
         .toolbar {
             background: #333;
             overflow: visible;
         }
+        .toolbar > * {
+            float: left;
+            margin: 2.5px;
+            margin-right: 0px;
+        }
+        .toolbar::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
     </style>
     <script type="module">
         import Dropdown from "./dropdown.mjs"
         import Toggle from "./toggle.mjs"
+        import Trigger from "./trigger.mjs"
+        import TriggerSet from "./trigger_set.mjs"
         customElements.define("dropdown-select", Dropdown);
         customElements.define("icon-toggle", Toggle);
+        customElements.define("icon-trigger", Trigger);
+        customElements.define("trigger-set", TriggerSet);
     </script>
 </head>
 <body>
     <div class="toolbar">
-        <icon-toggle tooltip="Project settings" src="build-white-18dp.svg" 
-                    name="cat" value="quack"></icon-toggle>
+        <icon-trigger tooltip="Project settings" 
+            src="build-white-18dp.svg" name="cat" 
+            onclick="alert('settings')" disabled>
+        </icon-trigger>
         <dropdown-select>
-            <div active>apple</div>
-            <div>plum</div>
-            <div>pear</div>
-            <div>o<b>ran</b>ge</div>
+            <span active>apple</span>
+            <span>plum</span>
+            <span>pear</span>
+            <span>o<b>ran</b>ge</span>
         </dropdown-select>
-        <icon-toggle tooltip="Message events" src="sms_failed-white-18dp.svg" 
-                        name="duck" value="quack"></icon-toggle>
+        <icon-toggle tooltip="Message events" 
+            src="sms_failed-white-18dp.svg" name="duck" value="quack">
+        </icon-toggle>
         <icon-toggle tooltip="Timers" src="watch_later-white-18dp.svg" 
-                        name="duck" value="quack"></icon-toggle>
+            name="duck" value="quack"></icon-toggle>
+        <trigger-set>
+            <span active onclick="console.log('bugs')">Build + run</span>
+            <span onclick="console.log('old bugs')">Run</span>
+            <span onclick="console.log('warnings')">Build</span>
+            <span onclick="console.log('You don\'t know how to write these')">
+                Build tasks...
+            </span>
+        </trigger-set>
     </div>
 </body>
 </html>
