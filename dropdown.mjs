@@ -175,7 +175,6 @@ export default class extends HTMLElement {
 
     updateWidth() {;
         const optsWidth = this.options.clientWidth + "px";
-        console.log(optsWidth);
         this.style.width = optsWidth;
     }
 }

@@ -13,7 +13,6 @@ export function connectEvent(name, one, other)
         // If natural, relay it to the target and set the relay flag
         if (!echo_blocker) 
         {
-            console.log("forwarding event", ev, "to", target);
             echo_blocker = true;
             target.dispatchEvent(new ev.constructor(ev.type, ev));
             ev.stopPropagation();
@@ -25,7 +24,6 @@ export function connectEvent(name, one, other)
     one.shadowRoot?.addEventListener(name, get_handler(other));
     other.addEventListener(name, get_handler(one));
     other.shadowRoot?.addEventListener(name, get_handler(one));
-    console.log("Now forwarding", name, "between", one, "and", other);
 }
 
 /**
@@ -49,8 +47,6 @@ export function connectAttribute(name, one, other)
             // If mutated by this pair, don't echo
             if (!echo_blocker) 
             {
-                console.log("applying mutation", mutation, "from", 
-                            source, "to", target)
                 if (source.hasAttribute(name)) 
                 {
                     const value = source.getAttribute(name);
@@ -66,7 +62,6 @@ export function connectAttribute(name, one, other)
     }
     get_watcher(one, other);
     get_watcher(other, one);
-    console.log("Now syncing", name, "between", one, "and", other);
 }
 
 /**
