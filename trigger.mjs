@@ -36,7 +36,7 @@ img {
 }
 `;
 
-export default class extends HTMLElement {
+export default class IconTrigger extends HTMLElement {
     constructor() {
         super();
         // === Create shadow root ===
@@ -51,3 +51,5 @@ export default class extends HTMLElement {
         connectAttribute("src", this, this.img);
     }
 }
+
+customElements.define("icon-trigger", IconTrigger);

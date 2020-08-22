@@ -9,9 +9,18 @@
             background: black; 
             font-family: sans-serif;
         }
-        .toolbar {
+        multi-bar {
             background: #333;
-            overflow: visible;
+        }
+        multi-bar::part(handle) {
+            border: 1px solid #888;
+            background: repeating-linear-gradient(
+                45deg,
+                #444,
+                #444 1px,
+                #888 2px,
+                #888 3px
+            );
         }
         .toolbar > * {
             float: left;
@@ -30,14 +39,11 @@
         import Toggle from "./toggle.mjs"
         import Trigger from "./trigger.mjs"
         import TriggerSet from "./trigger_set.mjs"
-        customElements.define("dropdown-select", Dropdown);
-        customElements.define("icon-toggle", Toggle);
-        customElements.define("icon-trigger", Trigger);
-        customElements.define("trigger-set", TriggerSet);
+        import Multibar from "./multibar.mjs"
     </script>
 </head>
 <body>
-    <div class="toolbar">
+    <multi-bar>
         <icon-trigger tooltip="Project settings" 
             src="demo_data/build-white-18dp.svg" name="cat" 
             onclick="alert('settings')" disabled>
@@ -61,6 +67,6 @@
                 Build tasks...
             </span>
         </trigger-set>
-    </div>
+    </multi-bar>
 </body>
 </html>

@@ -14,7 +14,7 @@ const css = `
 }
 `
 
-export default class extends Dropdown {
+export default class TriggerSet extends Dropdown {
     constructor() {
         super();
         this.stylesheet.append(css);
@@ -47,3 +47,5 @@ export default class extends Dropdown {
         this.active?.dispatchEvent(new ev.constructor(ev.type, ev));
     }
 }
+
+customElements.define("trigger-set", TriggerSet);

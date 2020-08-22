@@ -40,7 +40,7 @@ img {
 }
 `;
 
-export default class extends HTMLElement {
+export default class IconToggle extends HTMLElement {
     constructor() {
         super();
         // === Create shadow root ===
@@ -83,3 +83,5 @@ export default class extends HTMLElement {
         else this.removeAttribute("indeterminate");
     }
 }
+
+customElements.define("icon-toggle", IconToggle);

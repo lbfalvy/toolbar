@@ -58,7 +58,7 @@ const css = `
     padding: 5px 24px 7px 7px;  /* same as visible, plus the arrow */
 }`;
 
-export default class extends HTMLElement {
+export default class DropdownSelect extends HTMLElement {
     constructor() {
         super();
         // === Build shadow tree ===
@@ -178,3 +178,5 @@ export default class extends HTMLElement {
         this.style.width = optsWidth;
     }
 }
+
+customElements.define("dropdown-select", DropdownSelect);
