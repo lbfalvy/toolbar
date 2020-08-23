@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toolbar example</title>
+    <link rel="stylesheet" href="tooltip.css">
     <style>
         body { 
             background: black; 
@@ -22,17 +23,9 @@
                 #888 3px
             );
         }
-        .toolbar > * {
-            float: left;
-            margin: 2.5px;
-            margin-right: 0px;
+        multi-bar > section > * {
+            display: table-cell;
         }
-        .toolbar::after {
-            content: "";
-            display: block;
-            clear: both;
-        }
-
     </style>
     <script type="module">
         import Dropdown from "./dropdown.mjs"
@@ -44,29 +37,33 @@
 </head>
 <body>
     <multi-bar>
-        <icon-trigger tooltip="Project settings" 
-            src="demo_data/build-white-18dp.svg" name="cat" 
-            onclick="alert('settings')" disabled>
-        </icon-trigger>
-        <dropdown-select>
-            <span active>apple</span>
-            <span>plum</span>
-            <span>pear</span>
-            <span>o<b>ran</b>ge</span>
-        </dropdown-select>
-        <icon-toggle tooltip="Message events" 
-            src="demo_data/sms_failed-white-18dp.svg" name="duck" value="quack">
-        </icon-toggle>
-        <icon-toggle tooltip="Timers" src="demo_data/watch_later-white-18dp.svg" 
-            name="duck" value="quack"></icon-toggle>
-        <trigger-set>
-            <span active onclick="console.log('bugs')">Build + run</span>
-            <span onclick="console.log('old bugs')">Run</span>
-            <span onclick="console.log('warnings')">Build</span>
-            <span onclick="console.log('You don\'t know how to write these')">
-                Build tasks...
-            </span>
-        </trigger-set>
+        <section>
+            <dropdown-select>
+                <span active>apple</span>
+                <span>plum</span>
+                <span>pear</span>
+                <span>o<b>ran</b>ge</span>
+            </dropdown-select>
+            <icon-toggle tooltip="Message events"
+                src="demo_data/sms_failed-white-18dp.svg" name="duck" value="quack">
+            </icon-toggle>
+            <icon-toggle tooltip="Timers" src="demo_data/watch_later-white-18dp.svg" 
+                name="duck" value="quack"></icon-toggle>
+        </section>
+        <section>
+            <icon-trigger tooltip="Project settings" 
+                src="demo_data/build-white-18dp.svg" name="cat" 
+                onclick="alert('settings')" disabled>
+            </icon-trigger>
+            <trigger-set tooltip="Launch options">
+                <span active onclick="console.log('bugs')">Build + run</span>
+                <span onclick="console.log('old bugs')">Run</span>
+                <span onclick="console.log('warnings')">Build</span>
+                <span onclick="console.log('You don\'t know how to write these')">
+                    Build tasks...
+                </span>
+            </trigger-set>
+        </section>
     </multi-bar>
 </body>
 </html>
